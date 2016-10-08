@@ -1,3 +1,4 @@
+// FIXME: Feel free to remove this :-)
 console.log('\n\nGood Luck! 😅\n\n');
 
 const server = require('socket.io')();
@@ -36,4 +37,5 @@ server.on('connection', (client) => {
     reloadTodos();
 });
 
+console.log('Waiting for clients to connect');
 server.listen(3003);
