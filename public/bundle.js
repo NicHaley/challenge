@@ -65,6 +65,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var server = io('http://localhost:3003/');
+	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
@@ -82,7 +84,18 @@
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
 	
-	      console.log(1111);
+	      var text = this.state.text.trim();
+	
+	      server.emit('make', {
+	        title: text
+	      });
+	
+	      this.setState({ text: '' });
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ text: e.target.value });
 	    }
 	  }, {
 	    key: 'render',
@@ -92,8 +105,8 @@
 	        null,
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit },
-	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, placeholder: 'Feed the cat' }),
+	          { onSubmit: this.handleSubmit.bind(this) },
+	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, onChange: this.handleChange.bind(this), placeholder: 'Feed the cat' }),
 	          _react2.default.createElement(
 	            'button',
 	            { type: 'submit', value: 'Post' },
