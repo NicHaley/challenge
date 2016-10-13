@@ -67,6 +67,23 @@
 	
 	var server = io('http://localhost:3003/');
 	
+	// server.on('post', todo => {
+	//   render(todo);
+	// });
+	
+	// // NOTE: These are listeners for events from the server
+	// // This event is for (re)loading the entire list of todos from the server
+	// server.on('load', todos => {
+	//   todos.forEach(todo => render(todo));
+	// });
+	
+	// render (todo) {
+	//   const listItem = document.createElement('li');
+	//   const listItemText = document.createTextNode(todo.title);
+	//   listItem.appendChild(listItemText);
+	//   list.appendChild(listItem);
+	// }
+	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
@@ -75,11 +92,27 @@
 	
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	
-	    _this.state = { text: "" };
+	    _this.state = {
+	      text: "",
+	      todos: []
+	    };
 	    return _this;
 	  }
 	
 	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      server.on('post', function (todo) {
+	        _this2.setState({ todos: _this2.state.todos.concat([todo]) });
+	      });
+	
+	      server.on('load', function (todos) {
+	        _this2.setState({ todos: todos });
+	      });
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
@@ -100,18 +133,31 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var listItems = this.state.todos.map(function (todo) {
+	        return _react2.default.createElement(
+	          'li',
+	          { key: todo.id },
+	          todo.title
+	        );
+	      });
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit.bind(this) },
-	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, onChange: this.handleChange.bind(this), placeholder: 'Feed the cat' }),
+	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, onChange: this.handleChange.bind(this), placeholder: 'Write a todo' }),
 	          _react2.default.createElement(
 	            'button',
 	            { type: 'submit', value: 'Post' },
 	            'Submit'
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          null,
+	          listItems
 	        )
 	      );
 	    }
