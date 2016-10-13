@@ -26,7 +26,9 @@ server.on('connection', (client) => {
         const newTodo = new Todo(title=t.title);
 
         // Push this newly created todo to our database
+        console.log(123, DB);
         DB.push(newTodo);
+        console.log(345, DB);
 
         // Send the latest todos to the client
         // FIXME: This sends all todos every time, could this be more efficient?
