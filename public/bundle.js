@@ -68,19 +68,38 @@
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
-	  function App() {
+	  function App(props) {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	
+	    _this.state = { text: "" };
+	    return _this;
 	  }
 	
 	  _createClass(App, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	
+	      console.log(1111);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'p',
+	        'div',
 	        null,
-	        ' Hello React!'
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit },
+	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, placeholder: 'Feed the cat' }),
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'submit', value: 'Post' },
+	            'Submit'
+	          )
+	        )
 	      );
 	    }
 	  }]);
