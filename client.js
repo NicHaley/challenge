@@ -18,12 +18,15 @@ function add() {
 }
 
 function render(todo) {
-    console.log(11111, todo);
     const listItem = document.createElement('li');
     const listItemText = document.createTextNode(todo.title);
     listItem.appendChild(listItemText);
     list.appendChild(listItem);
 }
+
+server.on('post', (todo) => {
+    render(todo);
+});
 
 // NOTE: These are listeners for events from the server
 // This event is for (re)loading the entire list of todos from the server
