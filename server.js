@@ -25,10 +25,24 @@ server.on('connection', (client) => {
 
     }
 
+    const deleteTodo = (todo) => {
+
+        console.log("deleting todo", todo);
+        // DB.push(newTodo);
+        // server.emit('post', newTodo);
+
+    }
+
     // Accepts when a client makes a new todo
     client.on('make', t => {
         const newTodo = new Todo(title=t.title);
         postTodo(newTodo);
+    });
+
+    // Accepts when a client deletes a new todo
+    client.on('delete', t => {
+        // const newTodo = new Todo(title=t.title);
+        deleteTodo(t);
     });
 
     // Send the DB downstream on connect

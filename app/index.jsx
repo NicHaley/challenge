@@ -3,23 +3,6 @@ import {render} from 'react-dom';
 
 const server = io('http://localhost:3003/');
 
-// server.on('post', todo => {
-//   render(todo);
-// });
-
-// // NOTE: These are listeners for events from the server
-// // This event is for (re)loading the entire list of todos from the server
-// server.on('load', todos => {
-//   todos.forEach(todo => render(todo));
-// });
-
-// render (todo) {
-//   const listItem = document.createElement('li');
-//   const listItemText = document.createTextNode(todo.title);
-//   listItem.appendChild(listItemText);
-//   list.appendChild(listItem);
-// }
-
 class App extends React.Component {
 
   constructor(props) {
@@ -39,6 +22,7 @@ class App extends React.Component {
     server.on('load', todos => {
       this.setState({todos: todos});
     });
+
   }
 
   handleSubmit (e) {
@@ -57,10 +41,19 @@ class App extends React.Component {
   	this.setState({text: e.target.value});
   }
 
+  handleDelete (todo) {
+    server.emit('delete', {
+      todo : todo
+    });
+  }
+
   render () {
     const listItems = this.state.todos.map(todo => {
       return (
-        <li key={todo.id}>{todo.title}</li>
+        <li key={todo.id}>
+          {todo.title}
+          <button>Delete</button>
+        </li>
       )
     });
 
@@ -68,10 +61,18 @@ class App extends React.Component {
 	    <div>
 	    	<form onSubmit={this.handleSubmit.bind(this)}>
 		    	<input id="todo-input" type="text" value={this.state.text} onChange={this.handleChange.bind(this)} placeholder="Write a todo" />
-		    	<button type="submit" value="Post">Submit</button>
+		    	<button className="test" type="submit" value="Post">Submit</button>
 	    	</form>
         <ul>
-          {listItems}
+          {this.state.todos.map((todo) => {
+            const boundClick = this.handleDelete.bind(this, todo);
+            return (
+              <li onClick={boundClick} key={todo.id}>
+                {todo.title}
+                <button>Delete</button>
+              </li>
+            );
+          }, this)}
         </ul>
 	    </div>
     )
