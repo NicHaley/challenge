@@ -91,6 +91,14 @@
 	        _this2.setState({ todos: _this2.state.todos.concat([todo]) });
 	      });
 	
+	      server.on('delete', function (todoId) {
+	        var newArray = _this2.state.todos.filter(function (t) {
+	          return t.id !== todoId;
+	        });
+	
+	        _this2.setState({ todos: newArray });
+	      });
+	
 	      server.on('load', function (todos) {
 	        _this2.setState({ todos: todos });
 	      });

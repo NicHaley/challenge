@@ -19,6 +19,14 @@ class App extends React.Component {
       this.setState({todos: this.state.todos.concat([todo])});
     });
 
+    server.on('delete', todoId => {
+      const newArray = this.state.todos.filter(function(t) {
+        return t.id !== todoId;
+      });
+
+      this.setState({todos: newArray});
+    });
+
     server.on('load', todos => {
       this.setState({todos: todos});
     });

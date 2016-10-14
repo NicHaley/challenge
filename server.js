@@ -7,7 +7,7 @@ server.on('connection', (client) => {
     // Parse all default Todo's from db
 
     // FIXME: DB is reloading on client refresh. It should be persistent on new client connections from the last time the server was run...
-    const DB = firstTodos.map(t => {
+    let DB = firstTodos.map(t => {
         // Form new Todo objects
         return new Todo(title=t.title);
     });
@@ -26,11 +26,11 @@ server.on('connection', (client) => {
     }
 
     const deleteTodo = (todo) => {
+        DB = DB.filter(function(t) {
+            return t.id !== todo.todo.id;
+        });
 
-        console.log("deleting todo", todo);
-        // DB.push(newTodo);
-        // server.emit('post', newTodo);
-
+        server.emit('delete', todo.todo.id);
     }
 
     // Accepts when a client makes a new todo
