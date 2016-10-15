@@ -90,6 +90,12 @@ class App extends React.Component {
     });
   }
 
+  handleDeleteAll () {
+    this.state.todos.forEach(todo => {
+      this.handleDelete(todo);
+    });
+  }
+
   render () {
     const listItems = this.state.todos.map(todo => {
       return (
@@ -122,7 +128,8 @@ class App extends React.Component {
             );
           }, this)}
         </ul>
-        <button onClick={this.handleToggleAll.bind(this)}>Mark all tasks as completed</button>
+        <button className="todos__toggle-all-button" onClick={this.handleToggleAll.bind(this)}>Mark all tasks as completed</button>
+        <button className="todos__delete-all-button" onClick={this.handleDeleteAll.bind(this)}>Delete all tasks</button>
 	    </div>
     )
   }
