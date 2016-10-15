@@ -177,33 +177,42 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'todos' },
+	        _react2.default.createElement(
+	          'h1',
+	          { className: 'todos__title' },
+	          'todos'
+	        ),
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit.bind(this) },
-	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', value: this.state.text, onChange: this.handleChange.bind(this), placeholder: 'Write a todo' }),
+	          { className: 'todos__form', onSubmit: this.handleSubmit.bind(this), autoComplete: 'off' },
+	          _react2.default.createElement('input', { id: 'todo-input', type: 'text', className: 'todos__form__input', value: this.state.text, onChange: this.handleChange.bind(this), placeholder: 'Write a todo' }),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'test', type: 'submit', value: 'Post' },
+	            { className: 'todos__form__submit', type: 'submit', value: 'Post' },
 	            'Submit'
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'ul',
-	          null,
+	          { className: 'todos__list' },
 	          this.state.todos.map(function (todo) {
 	            var boundDelete = _this3.handleDelete.bind(_this3, todo),
 	                boundToggle = _this3.handleToggle.bind(_this3, todo);
 	
 	            return _react2.default.createElement(
 	              'li',
-	              { key: todo.id },
-	              _react2.default.createElement('input', { type: 'checkbox', onChange: boundToggle, checked: todo.isCompleted }),
-	              todo.title,
+	              { className: 'todos__list__item', key: todo.id },
+	              _react2.default.createElement('input', { className: 'todos__list__item__toggle', type: 'checkbox', id: "todo_" + todo.id, onChange: boundToggle, checked: todo.isCompleted }),
+	              _react2.default.createElement(
+	                'label',
+	                { htmlFor: "todo_" + todo.id, className: "todos__list__item__title" + (todo.isCompleted ? " m-state_completed" : "") },
+	                todo.title
+	              ),
 	              _react2.default.createElement(
 	                'button',
-	                { onClick: boundDelete },
-	                'Delete'
+	                { className: 'todos__list__item__button', onClick: boundDelete },
+	                '\u2715'
 	              )
 	            );
 	          }, this)
@@ -22138,7 +22147,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".test {\n  color: red; }\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Helvetica';\n  font-weight: 300;\n  margin: 0; }\n\nh1, h2, h3, h4, h5, h6 {\n  margin: 0;\n  font-weight: 300; }\n\n.todos {\n  max-width: 500px;\n  margin: auto; }\n  .todos__title {\n    text-align: center;\n    font-size: 60px;\n    margin: 20px 0; }\n  .todos__form {\n    display: flex;\n    height: 50px; }\n    .todos__form__input {\n      flex: 1;\n      padding: 10px;\n      font-size: 18px;\n      border: 1px solid #d2d2d2; }\n    .todos__form__submit {\n      border: none;\n      background-color: #007aff;\n      color: white;\n      font-size: 16px;\n      padding: 0 10px; }\n  .todos__list {\n    list-style: none;\n    padding: 0;\n    font-size: 18px; }\n    .todos__list__item {\n      margin-bottom: 10px;\n      display: flex;\n      align-items: center;\n      user-select: none; }\n      .todos__list__item__toggle {\n        margin-right: 10px;\n        cursor: pointer; }\n      .todos__list__item__title {\n        cursor: pointer; }\n        .todos__list__item__title.m-state_completed {\n          text-decoration: line-through;\n          color: #8a8a8a; }\n      .todos__list__item__button {\n        margin-left: auto;\n        border: none;\n        background: none;\n        font-size: 18px;\n        cursor: pointer;\n        color: #d2d2d2; }\n        .todos__list__item__button:hover {\n          color: black; }\n", ""]);
 	
 	// exports
 

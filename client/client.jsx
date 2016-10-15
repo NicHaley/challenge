@@ -95,22 +95,23 @@ class App extends React.Component {
     });
 
     return (
-	    <div>
-	    	<form onSubmit={this.handleSubmit.bind(this)}>
-		    	<input id="todo-input" type="text" value={this.state.text} onChange={this.handleChange.bind(this)} placeholder="Write a todo" />
-		    	<button className="test" type="submit" value="Post">Submit</button>
+	    <div className="todos">
+        <h1 className="todos__title">todos</h1>
+	    	<form className="todos__form" onSubmit={this.handleSubmit.bind(this)} autoComplete="off">
+		    	<input id="todo-input" type="text" className="todos__form__input" value={this.state.text} onChange={this.handleChange.bind(this)} placeholder="Write a todo" />
+		    	<button className="todos__form__submit" type="submit" value="Post">Submit</button>
 	    	</form>
-        <ul>
+        <ul className="todos__list">
           {this.state.todos.map((todo) => {
             const 
               boundDelete = this.handleDelete.bind(this, todo),
               boundToggle = this.handleToggle.bind(this, todo);
 
             return (
-              <li key={todo.id}>
-                <input type="checkbox" onChange={boundToggle} checked={todo.isCompleted} />
-                {todo.title}
-                <button onClick={boundDelete}>Delete</button>
+              <li className="todos__list__item" key={todo.id}>
+                <input className="todos__list__item__toggle" type="checkbox" id={"todo_" + todo.id} onChange={boundToggle} checked={todo.isCompleted} />
+                <label htmlFor={"todo_" + todo.id} className={"todos__list__item__title" + (todo.isCompleted ? " m-state_completed" : "")} >{todo.title}</label>
+                <button className="todos__list__item__button" onClick={boundDelete}>✕</button>
               </li>
             );
           }, this)}
