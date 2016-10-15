@@ -27,6 +27,26 @@ class App extends React.Component {
       this.setState({todos: newArray});
     });
 
+    server.on('update', todo => {
+
+      let 
+        update = require('react-addons-update'),
+        todos = this.state.todos;
+
+      let todoIndex = todos.findIndex(function(t) { 
+        return t.id === todo.id; 
+      });
+
+      let updatedTodo = update(todos[todoIndex], {isCompleted: {$set: todo.isCompleted}}); 
+
+      let newTodos = update(todos, {
+        $splice: [[todoIndex, 1, updatedTodo]]
+      });
+
+      this.setState({todos: newTodos});
+
+    });
+
     server.on('load', todos => {
       this.setState({todos: todos});
     });
@@ -55,6 +75,14 @@ class App extends React.Component {
     });
   }
 
+  handleToggle (todo) {
+    todo.isCompleted = !todo.isCompleted;
+
+    server.emit('update', {
+      todo : todo
+    });
+  }
+
   render () {
     const listItems = this.state.todos.map(todo => {
       return (
@@ -73,11 +101,15 @@ class App extends React.Component {
 	    	</form>
         <ul>
           {this.state.todos.map((todo) => {
-            const boundClick = this.handleDelete.bind(this, todo);
+            const 
+              boundDelete = this.handleDelete.bind(this, todo),
+              boundToggle = this.handleToggle.bind(this, todo);
+
             return (
-              <li onClick={boundClick} key={todo.id}>
+              <li key={todo.id}>
+                <input type="checkbox" onChange={boundToggle} checked={todo.isCompleted} />
                 {todo.title}
-                <button>Delete</button>
+                <button onClick={boundDelete}>Delete</button>
               </li>
             );
           }, this)}
