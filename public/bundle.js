@@ -150,17 +150,26 @@
 	    }
 	  }, {
 	    key: 'handleToggle',
-	    value: function handleToggle(todo) {
-	      todo.isCompleted = !todo.isCompleted;
+	    value: function handleToggle(todo, options) {
+	      todo.isCompleted = options.value || !todo.isCompleted;
 	
 	      server.emit('update', {
 	        todo: todo
 	      });
 	    }
 	  }, {
+	    key: 'handleToggleAll',
+	    value: function handleToggleAll() {
+	      var _this3 = this;
+	
+	      this.state.todos.forEach(function (todo) {
+	        _this3.handleToggle(todo, { value: true });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      var listItems = this.state.todos.map(function (todo) {
 	        return _react2.default.createElement(
@@ -197,8 +206,8 @@
 	          'ul',
 	          { className: 'todos__list' },
 	          this.state.todos.map(function (todo) {
-	            var boundDelete = _this3.handleDelete.bind(_this3, todo),
-	                boundToggle = _this3.handleToggle.bind(_this3, todo);
+	            var boundDelete = _this4.handleDelete.bind(_this4, todo),
+	                boundToggle = _this4.handleToggle.bind(_this4, todo);
 	
 	            return _react2.default.createElement(
 	              'li',
@@ -216,6 +225,11 @@
 	              )
 	            );
 	          }, this)
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.handleToggleAll.bind(this) },
+	          'Mark all tasks as completed'
 	        )
 	      );
 	    }
@@ -22147,7 +22161,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Helvetica';\n  font-weight: 300;\n  margin: 0; }\n\nh1, h2, h3, h4, h5, h6 {\n  margin: 0;\n  font-weight: 300; }\n\n.todos {\n  max-width: 500px;\n  margin: auto; }\n  .todos__title {\n    text-align: center;\n    font-size: 60px;\n    margin: 20px 0; }\n  .todos__form {\n    display: flex;\n    height: 50px; }\n    .todos__form__input {\n      flex: 1;\n      padding: 10px;\n      font-size: 18px;\n      border: 1px solid #c1c1c1; }\n    .todos__form__submit {\n      border: none;\n      background-color: #007aff;\n      color: white;\n      font-size: 16px;\n      padding: 0 10px; }\n  .todos__list {\n    list-style: none;\n    padding: 0;\n    font-size: 18px; }\n    .todos__list__item {\n      margin-bottom: 10px;\n      display: flex;\n      align-items: center;\n      -webkit-touch-callout: none;\n      -webkit-user-select: none;\n      -khtml-user-select: none;\n      -moz-user-select: none;\n      -ms-user-select: none;\n      user-select: none; }\n      .todos__list__item__toggle {\n        margin-right: 10px;\n        cursor: pointer; }\n      .todos__list__item__title {\n        cursor: pointer; }\n        .todos__list__item__title.m-state_completed {\n          text-decoration: line-through;\n          color: #c1c1c1; }\n      .todos__list__item__button {\n        margin-left: auto;\n        border: none;\n        background: none;\n        font-size: 18px;\n        cursor: pointer;\n        color: #c1c1c1; }\n        .todos__list__item__button:hover {\n          color: black; }\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Helvetica';\n  font-weight: 300;\n  margin: 0; }\n\nh1, h2, h3, h4, h5, h6 {\n  margin: 0;\n  font-weight: 300; }\n\n.todos {\n  max-width: 500px;\n  margin: auto;\n  padding: 0 10px; }\n  .todos__title {\n    text-align: center;\n    font-size: 60px;\n    margin: 20px 0; }\n  .todos__form {\n    display: flex;\n    height: 50px; }\n    .todos__form__input {\n      flex: 1;\n      padding: 10px;\n      font-size: 18px;\n      border: 1px solid #c1c1c1; }\n    .todos__form__submit {\n      border: none;\n      background-color: #007aff;\n      color: white;\n      font-size: 16px;\n      padding: 0 10px; }\n  .todos__list {\n    list-style: none;\n    padding: 0;\n    font-size: 18px; }\n    .todos__list__item {\n      margin-bottom: 10px;\n      display: flex;\n      align-items: center;\n      -webkit-touch-callout: none;\n      -webkit-user-select: none;\n      -khtml-user-select: none;\n      -moz-user-select: none;\n      -ms-user-select: none;\n      user-select: none; }\n      .todos__list__item__toggle {\n        margin-right: 10px;\n        cursor: pointer; }\n      .todos__list__item__title {\n        cursor: pointer; }\n        .todos__list__item__title.m-state_completed {\n          text-decoration: line-through;\n          color: #c1c1c1; }\n      .todos__list__item__button {\n        margin-left: auto;\n        border: none;\n        background: none;\n        font-size: 18px;\n        cursor: pointer;\n        color: #c1c1c1; }\n        .todos__list__item__button:hover {\n          color: black; }\n", ""]);
 	
 	// exports
 

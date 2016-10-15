@@ -76,11 +76,17 @@ class App extends React.Component {
     });
   }
 
-  handleToggle (todo) {
-    todo.isCompleted = !todo.isCompleted;
+  handleToggle (todo, options) {
+    todo.isCompleted = options.value || !todo.isCompleted;
 
     server.emit('update', {
       todo : todo
+    });
+  }
+
+  handleToggleAll () {
+    this.state.todos.forEach(todo => {
+      this.handleToggle(todo, {value: true});
     });
   }
 
@@ -116,6 +122,7 @@ class App extends React.Component {
             );
           }, this)}
         </ul>
+        <button onClick={this.handleToggleAll.bind(this)}>Mark all tasks as completed</button>
 	    </div>
     )
   }
