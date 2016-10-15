@@ -1,5 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
+require("./client.scss");
 
 const server = io('http://localhost:3003/');
 
