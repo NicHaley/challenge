@@ -1,5 +1,4 @@
-$light-gray: #d2d2d2;
-$muted-gray: #8a8a8a;
+$light-gray: #c1c1c1;
 $blue: #007aff;
 
 body {
@@ -52,7 +51,12 @@ h1, h2, h3, h4, h5, h6 {
     	margin-bottom: 10px;
     	display: flex;
     	align-items: center;
-    	user-select: none;
+	    -webkit-touch-callout: none;
+	    -webkit-user-select: none;
+	    -khtml-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
 
     	&__toggle {
 		    margin-right: 10px;
@@ -64,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 
     		&.m-state_completed {
     			text-decoration: line-through;
-    			color: $muted-gray;
+    			color: $light-gray;
     		}
     	}
 
