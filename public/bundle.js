@@ -79,7 +79,8 @@
 	
 	    _this.state = {
 	      text: "",
-	      todos: []
+	      todos: [],
+	      tempTodos: []
 	    };
 	    return _this;
 	  }
@@ -90,7 +91,14 @@
 	      var _this2 = this;
 	
 	      server.on('post', function (todo) {
-	        _this2.setState({ todos: _this2.state.todos.concat([todo]) });
+	        var newTempTodos = _this2.state.tempTodos;
+	
+	        newTempTodos.shift();
+	
+	        _this2.setState({
+	          todos: _this2.state.todos.concat([todo]),
+	          tempTodos: newTempTodos
+	        });
 	      });
 	
 	      server.on('delete', function (todoId) {
@@ -134,7 +142,10 @@
 	        title: text
 	      });
 	
-	      this.setState({ text: '' });
+	      this.setState({
+	        text: '',
+	        tempTodos: this.state.tempTodos.concat([text])
+	      });
 	    }
 	  }, {
 	    key: 'handleChange',
@@ -236,14 +247,40 @@
 	          }, this)
 	        ),
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'todos__toggle-all-button', onClick: this.handleToggleAll.bind(this) },
-	          'Mark all tasks as completed'
+	          'ul',
+	          { className: 'todos__list m-state_disabled' },
+	          this.state.tempTodos.map(function (title, i) {
+	            return _react2.default.createElement(
+	              'li',
+	              { className: 'todos__list__item', key: i },
+	              _react2.default.createElement('input', { className: 'todos__list__item__toggle', type: 'checkbox' }),
+	              _react2.default.createElement(
+	                'label',
+	                { className: 'todos__list__item__title' },
+	                title,
+	                '...'
+	              ),
+	              _react2.default.createElement(
+	                'button',
+	                { className: 'todos__list__item__button' },
+	                '\u2715'
+	              )
+	            );
+	          }, this)
 	        ),
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'todos__delete-all-button', onClick: this.handleDeleteAll.bind(this) },
-	          'Delete all tasks'
+	          'div',
+	          { className: 'todos__actions' },
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'todos__actions__toggle-all-button', onClick: this.handleToggleAll.bind(this) },
+	            'Mark all tasks as completed'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'todos__actions__delete-all-button', onClick: this.handleDeleteAll.bind(this) },
+	            'Delete all tasks'
+	          )
 	        )
 	      );
 	    }
@@ -22175,7 +22212,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Helvetica';\n  font-weight: 300;\n  margin: 0; }\n\nh1, h2, h3, h4, h5, h6 {\n  margin: 0;\n  font-weight: 300; }\n\n.todos {\n  max-width: 500px;\n  margin: auto;\n  padding: 0 10px; }\n  .todos__title {\n    text-align: center;\n    font-size: 60px;\n    margin: 20px 0; }\n  .todos__form {\n    display: flex;\n    height: 50px; }\n    .todos__form__input {\n      flex: 1;\n      padding: 10px;\n      font-size: 18px;\n      border: 1px solid #c1c1c1; }\n    .todos__form__submit {\n      border: none;\n      background-color: #007aff;\n      color: white;\n      font-size: 16px;\n      padding: 0 10px; }\n  .todos__list {\n    list-style: none;\n    padding: 0;\n    font-size: 18px; }\n    .todos__list__item {\n      margin-bottom: 10px;\n      display: flex;\n      align-items: center;\n      -webkit-touch-callout: none;\n      -webkit-user-select: none;\n      -khtml-user-select: none;\n      -moz-user-select: none;\n      -ms-user-select: none;\n      user-select: none; }\n      .todos__list__item__toggle {\n        margin-right: 10px;\n        cursor: pointer; }\n      .todos__list__item__title {\n        cursor: pointer; }\n        .todos__list__item__title.m-state_completed {\n          text-decoration: line-through;\n          color: #c1c1c1; }\n      .todos__list__item__button {\n        margin-left: auto;\n        border: none;\n        background: none;\n        font-size: 18px;\n        cursor: pointer;\n        color: #c1c1c1; }\n        .todos__list__item__button:hover {\n          color: black; }\n  .todos__delete-all-button {\n    float: right; }\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Helvetica';\n  font-weight: 300;\n  margin: 0; }\n\nh1, h2, h3, h4, h5, h6 {\n  margin: 0;\n  font-weight: 300; }\n\n.todos {\n  max-width: 500px;\n  margin: auto;\n  padding: 0 10px; }\n  .todos__title {\n    text-align: center;\n    font-size: 60px;\n    margin: 20px 0; }\n  .todos__form {\n    display: flex;\n    height: 50px;\n    margin-bottom: 20px; }\n    .todos__form__input {\n      flex: 1;\n      padding: 10px;\n      font-size: 18px;\n      border: 1px solid #c1c1c1; }\n    .todos__form__submit {\n      border: none;\n      background-color: #007aff;\n      color: white;\n      font-size: 16px;\n      padding: 0 10px; }\n  .todos__list {\n    list-style: none;\n    padding: 0;\n    font-size: 18px;\n    margin: 0; }\n    .todos__list.m-state_disabled {\n      pointer-events: none;\n      color: #c1c1c1;\n      font-style: italic; }\n    .todos__list__item {\n      margin-bottom: 10px;\n      display: flex;\n      align-items: center;\n      -webkit-touch-callout: none;\n      -webkit-user-select: none;\n      -khtml-user-select: none;\n      -moz-user-select: none;\n      -ms-user-select: none;\n      user-select: none; }\n      .todos__list__item__toggle {\n        margin-right: 10px;\n        cursor: pointer; }\n      .todos__list__item__title {\n        cursor: pointer; }\n        .todos__list__item__title.m-state_completed {\n          text-decoration: line-through;\n          color: #c1c1c1; }\n      .todos__list__item__button {\n        margin-left: auto;\n        border: none;\n        background: none;\n        font-size: 18px;\n        cursor: pointer;\n        color: #c1c1c1; }\n        .todos__list__item__button:hover {\n          color: black; }\n  .todos__actions {\n    margin-top: 20px;\n    padding-top: 20px;\n    border-top: 1px solid #c1c1c1; }\n    .todos__actions__delete-all-button {\n      float: right; }\n", ""]);
 	
 	// exports
 

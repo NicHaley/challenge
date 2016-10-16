@@ -10,14 +10,22 @@ class App extends React.Component {
     super(props);
     this.state = {
       text : "",
-      todos : []
+      todos : [],
+      tempTodos : []
     };
   }
 
   componentDidMount () {
 
     server.on('post', todo => {
-      this.setState({todos: this.state.todos.concat([todo])});
+      const newTempTodos = this.state.tempTodos;
+
+      newTempTodos.shift();
+
+      this.setState({
+        todos: this.state.todos.concat([todo]),
+        tempTodos: newTempTodos
+      });
     });
 
     server.on('delete', todoId => {
@@ -51,7 +59,6 @@ class App extends React.Component {
     server.on('load', todos => {
       this.setState({todos: todos});
     });
-
   }
 
   handleSubmit (e) {
@@ -63,7 +70,10 @@ class App extends React.Component {
       title : text
     });
 
-    this.setState({text: ''});
+    this.setState({
+      text: '',
+      tempTodos: this.state.tempTodos.concat([text])
+    });
   }
 
   handleChange (e) {
@@ -128,8 +138,21 @@ class App extends React.Component {
             );
           }, this)}
         </ul>
-        <button className="todos__toggle-all-button" onClick={this.handleToggleAll.bind(this)}>Mark all tasks as completed</button>
-        <button className="todos__delete-all-button" onClick={this.handleDeleteAll.bind(this)}>Delete all tasks</button>
+        <ul className="todos__list m-state_disabled">
+          {this.state.tempTodos.map((title, i) => {
+            return (
+              <li className="todos__list__item" key={i}>
+                <input className="todos__list__item__toggle" type="checkbox" />
+                <label className="todos__list__item__title" >{title}...</label>
+                <button className="todos__list__item__button">✕</button>
+              </li>
+            );
+          }, this)}
+        </ul>
+        <div className="todos__actions">
+          <button className="todos__actions__toggle-all-button" onClick={this.handleToggleAll.bind(this)}>Mark all tasks as completed</button>
+          <button className="todos__actions__delete-all-button" onClick={this.handleDeleteAll.bind(this)}>Delete all tasks</button>
+        </div>
 	    </div>
     )
   }

@@ -40,7 +40,11 @@ server.on('connection', (client) => {
     // Accepts when a client makes a new todo
     client.on('make', t => {
         const newTodo = new Todo(title=t.title);
-        postTodo(newTodo);
+
+        // Timeout to simulate delayed response
+        setTimeout(() => { 
+            postTodo(newTodo); 
+        }, 3000);
     });
 
     // Accepts when a client deletes a new todo
