@@ -2,21 +2,17 @@ const server = require('socket.io')();
 const firstTodos = require('./data');
 const Todo = require('./todo');
 
-// FIXME: DB is reloading on client refresh. It should be persistent on new client connections from the last time the server was run...
 let DB = firstTodos.map(t => {
-    // Form new Todo objects
     return new Todo(title=t.title);
 });
 
 server.on('connection', (client) => {
 
-    // Sends a message to the client to reload all todos
     const reloadTodos = () => {
         server.emit('load', DB);
     }
 
     const postTodo = (newTodo) => {
-        // Push this newly created todo to our database
         DB.push(newTodo);
         server.emit('post', newTodo);
     }

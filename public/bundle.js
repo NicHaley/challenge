@@ -90,9 +90,14 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 	
+	      // Set up scoket listeners on componentDidMount
+	
 	      server.on('post', function (todo) {
 	        var newTempTodos = _this2.state.tempTodos;
 	
+	        //Remove tempTodo from cache when it has been successfully added to DB
+	        // NOTE: This is a bit of a hack since the tempTodos do not have ids in this project. 
+	        // The better solution would be to create a 'model' (with id) for the todo on the frontend first, then update the frontend store when the post has been successful (ie. exactly how most modern FE frameworks work).
 	        newTempTodos.shift();
 	
 	        _this2.setState({
@@ -102,6 +107,7 @@
 	      });
 	
 	      server.on('delete', function (todoId) {
+	        //this.state.todos is immutable, therefore need to create newArray and setState equal to that
 	        var newArray = _this2.state.todos.filter(function (t) {
 	          return t.id !== todoId;
 	        });
@@ -110,7 +116,6 @@
 	      });
 	
 	      server.on('update', function (todo) {
-	
 	        var update = __webpack_require__(/*! react-addons-update */ 176),
 	            todos = _this2.state.todos;
 	
@@ -138,6 +143,7 @@
 	
 	      var text = this.state.text.trim();
 	
+	      // On 'make', the FE sends the text value. As mentioned earlier, a more robust solution would be to generate a model (with id) for the todo, and send that instead. I haven't done this here to save time.
 	      server.emit('make', {
 	        title: text
 	      });
