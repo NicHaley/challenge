@@ -16,11 +16,9 @@ server.on('connection', (client) => {
     }
 
     const postTodo = (newTodo) => {
-
         // Push this newly created todo to our database
         DB.push(newTodo);
         server.emit('post', newTodo);
-
     }
 
     const deleteTodo = (response) => {
@@ -33,7 +31,7 @@ server.on('connection', (client) => {
 
     const updateTodo = (response) => {
         let todoRecord = DB.find(t => t.id === response.todo.id);
-        todoRecord.isCompleted = response.todo.isCompleted
+        todoRecord = response.todo
         server.emit('update', todoRecord);
     }
 
@@ -63,3 +61,8 @@ server.on('connection', (client) => {
 
 console.log('Waiting for clients to connect');
 server.listen(3003);
+
+
+// module.exports = {
+//     test
+// }
