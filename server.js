@@ -3,52 +3,56 @@ const firstTodos = require('./data');
 const Todo = require('./todo');
 
 let DB = firstTodos.map(t => {
-    return new Todo(title=t.title);
+    return new Todo(t.title);
 });
+
+const reloadTodos = () => {
+    server.emit('load', DB);
+}
+
+const createTodo = (response) => {
+    const newTodo = new Todo(response.title);
+    DB.push(newTodo);
+
+    // Timeout to simulate delayed response
+    setTimeout(() => { 
+        postTodo(newTodo); 
+    }, 3000);
+}
+
+const postTodo = (newTodo) => {
+    server.emit('post', newTodo);
+}
+
+const deleteTodo = (response) => {
+    DB = DB.filter(function(t) {
+        return t.id !== response.todo.id;
+    });
+
+    server.emit('delete', response.todo.id);
+}
+
+const updateTodo = (response) => {
+    let todoRecord = DB.find(t => t.id === response.todo.id);
+    todoRecord = response.todo
+    server.emit('update', todoRecord);
+}
 
 server.on('connection', (client) => {
 
-    const reloadTodos = () => {
-        server.emit('load', DB);
-    }
-
-    const postTodo = (newTodo) => {
-        DB.push(newTodo);
-        server.emit('post', newTodo);
-    }
-
-    const deleteTodo = (response) => {
-        DB = DB.filter(function(t) {
-            return t.id !== response.todo.id;
-        });
-
-        server.emit('delete', response.todo.id);
-    }
-
-    const updateTodo = (response) => {
-        let todoRecord = DB.find(t => t.id === response.todo.id);
-        todoRecord = response.todo
-        server.emit('update', todoRecord);
-    }
-
     // Accepts when a client makes a new todo
-    client.on('make', t => {
-        const newTodo = new Todo(title=t.title);
-
-        // Timeout to simulate delayed response
-        setTimeout(() => { 
-            postTodo(newTodo); 
-        }, 3000);
+    client.on('make', response => {
+        createTodo(response);
     });
 
     // Accepts when a client deletes a new todo
-    client.on('delete', t => {
-        deleteTodo(t);
+    client.on('delete', response => {
+        deleteTodo(response);
     });
 
     // Accepts when a client updates a new todo
-    client.on('update', t => {
-        updateTodo(t);
+    client.on('update', response => {
+        updateTodo(response);
     });
 
     // Send the DB downstream on connect
@@ -59,6 +63,10 @@ console.log('Waiting for clients to connect');
 server.listen(3003);
 
 
-// module.exports = {
-//     test
-// }
+module.exports = {
+    server,
+    postTodo,
+    deleteTodo,
+    createTodo,
+    DB
+}

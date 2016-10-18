@@ -1,9 +1,14 @@
-const chai = require('chai');
-const expect = chai.expect;
-const Server = require('./server');
+const 
+	chai = require('chai'),
+	expect = chai.expect,
+	Server = require('./server'),
+	DB = Server.DB,
+	sampleText = "Do a vinyasa";
 
 describe('Server', function() {
-  it('Should do something', function() {
-    expect(0).to.equal(0);
+  it('It should push todos to the DB', function() {
+		Server.createTodo({title: sampleText});
+
+		expect(DB[DB.length - 1].title).to.equal(sampleText);
   });
 });
