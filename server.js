@@ -33,9 +33,13 @@ const deleteTodo = (response) => {
 }
 
 const updateTodo = (response) => {
-    let todoRecord = DB.find(t => t.id === response.todo.id);
-    todoRecord = response.todo
-    server.emit('update', todoRecord);
+    DB.forEach((t, i) => {
+        if (t.id === response.todo.id) {
+            DB[i] = response.todo;
+        }
+    });
+
+    server.emit('update', response.todo);
 }
 
 server.on('connection', (client) => {
